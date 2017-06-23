@@ -27,7 +27,7 @@ app.get('/articles', function(request, response) {
   client.query(`
     SELECT * FROM articles
     INNER JOIN authors
-    ON articles.author_id=authors.author_id;
+    ON articles.author_id = authors.author_id;
   `)
   .then(function(result) {
     response.send(result.rows);
@@ -83,9 +83,11 @@ app.put('/articles/:id', function(request, response) {
   // DONE: Add the required values from the request as data for the SQL query to interpolate
   client.query(
     `UPDATE authors
-    SET "authorUrl" = $1
-    WHERE author_id = $2`,
+    SET author = $1
+    SET "authorUrl" = $2
+    WHERE author_id = $3`,
     [
+      request.body.author,
       request.body.authorUrl,
       request.body.author_id
     ]
